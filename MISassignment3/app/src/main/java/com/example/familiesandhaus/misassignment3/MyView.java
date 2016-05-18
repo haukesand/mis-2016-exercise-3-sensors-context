@@ -13,20 +13,19 @@ import android.widget.RelativeLayout;
 
 public class MyView extends View {
 
-    private Paint PaintX;
-    private Paint PaintY;
-
-    private Paint PaintZ;
+    private Paint PaintX, PaintY, PaintZ, PaintST;
 
     private Bitmap canvasBitmap;
-    float speedX;
-    float speedY;
-    float speedZ;
+    float speedX, speedY, speedZ;
+
     float radius = 10;
     float oldPosX, oldPosY;
-    float posX = radius;
-    float posY = radius;
-    float posZ = radius;
+    float posX,posY, posZ = radius;
+    float centerX, centerY;
+    float right, bottom;
+    float left, top = 0;
+    float gX, gY, gZ = 0;
+    double magnitude, speedT;
     long lastUpdateTime = 0;
     final float METER_TO_PIXEL = 50.0f;
     RelativeLayout rl;
@@ -44,16 +43,33 @@ public class MyView extends View {
 
         //DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 
-        float centerX = this.getResources().getDisplayMetrics().widthPixels /2;
-        float centerY = this.getResources().getDisplayMetrics().heightPixels /2;
+        //float centerX = this.getResources().getDisplayMetrics().widthPixels /2;
+       // float centerY = this.getResources().getDisplayMetrics().heightPixels /2;
 
-        //x-axis
-        canvas.drawLine(centerX, centerY, centerX + posX, centerY, PaintX);
+        if (centerX <200) {
+            centerX = getWidth()/2;
+         centerY = getHeight()/2;
+        right = getWidth();
+        bottom = getHeight();
+       }
+
+        //x-axis // this uses abstract speed and show to few values
+        //canvas.drawLine(centerX, centerY, centerX + posX, centerY, PaintX);
         //y-axis
-        canvas.drawLine(centerX, centerY, centerX, centerY - posY, PaintY);
+        //canvas.drawLine(centerX, centerY, centerX, centerY - posY, PaintY);
 
         //z-axis
-        canvas.drawLine(centerX, centerY, posX, posZ, PaintZ);
+       // canvas.drawLine(centerX, centerY, posX, posZ, PaintZ);
+
+
+        //canvas.drawLine(posX, top, posX, bottom, PaintX); // this uses not realtime data but abstract speed
+       // canvas.drawLine(left, posY, right, posY, PaintY);
+        canvas.drawLine(centerX+(gX*-1)*20.0f, top, centerX+(gX*-1)*20.0f, bottom, PaintX);
+        canvas.drawLine(left,centerY + gY*20.0f , right,centerY + gY*20.0f , PaintY);
+        canvas.drawCircle(centerX,centerY,(gZ*-1)*3.0f+26, PaintZ);
+        canvas.drawCircle(centerX,centerY, (float) (speedT*10.0f), PaintST);
+        //canvas.drawLine(centerX, centerY, posZ, posZ, PaintZ);
+
 
     }
 
@@ -66,6 +82,8 @@ public class MyView extends View {
         PaintY.setColor(Color.GREEN);
         PaintZ = new Paint();
         PaintZ.setColor(Color.YELLOW);
+        PaintST = new Paint();
+        PaintST.setColor(Color.LTGRAY);
 
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
         oldPosX = posX;
@@ -73,6 +91,7 @@ public class MyView extends View {
 
         posX = getWidth() /2;
         posY = getHeight() /2;
+
     }
 
     public void update(float gravityX, float gravityY, float gravityZ) {
@@ -85,9 +104,15 @@ public class MyView extends View {
         long ellapse = now - lastUpdateTime;
         lastUpdateTime = now;
 
+        gX = gravityX;
+        gY = gravityY;
+        gZ = gravityZ;
+
+        magnitude = Math.sqrt(gX*gX+gY*gY+gZ*gZ);
+        speedT = magnitude - 9.8f;
         speedX -=((gravityX * ellapse)/1000.0f) * METER_TO_PIXEL;
         speedY +=((gravityY * ellapse)/1000.0f) * METER_TO_PIXEL;
-        speedZ +=((gravityY * ellapse)/1000.0f) * METER_TO_PIXEL;
+        speedZ +=((gravityZ * ellapse)/1000.0f) * METER_TO_PIXEL;
 
         posX += ((speedX * ellapse) / 1000.0f);
         posY += ((speedY * ellapse) / 1000.0f);
