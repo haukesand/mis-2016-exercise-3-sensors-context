@@ -48,9 +48,9 @@ public class MyView extends View {
         float centerY = this.getResources().getDisplayMetrics().heightPixels /2;
 
         //x-axis
-        canvas.drawLine(centerX, centerY, posX, centerY, PaintX);
+        canvas.drawLine(centerX, centerY, centerX + posX, centerY, PaintX);
         //y-axis
-        canvas.drawLine(centerX, centerY, centerX, posY, PaintY);
+        canvas.drawLine(centerX, centerY, centerX, centerY - posY, PaintY);
 
         //z-axis
         canvas.drawLine(centerX, centerY, posX, posZ, PaintZ);
