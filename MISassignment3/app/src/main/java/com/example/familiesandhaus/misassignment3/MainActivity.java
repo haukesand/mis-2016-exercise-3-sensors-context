@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import java.util.List;
+import com.example.familiesandhaus.misassignment3.MyView;
+
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -25,7 +27,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     float ax,ay,az,m;
     private AttributeSet aSet;
     TextView myTextView;
-MyView av;
+    private MyView mView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ MyView av;
         setContentView(R.layout.activity_main);
        // Intent intent= new Intent(MainActivity.this,MyView.class);
        // startActivity(Intent);
-         av = new MyView(this, aSet);
+        mView = (MyView) findViewById(R.id.view) ;
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         aSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener((SensorEventListener) this, aSensor, SensorManager.SENSOR_DELAY_GAME);
@@ -53,7 +56,7 @@ MyView av;
         if (event.sensor.getType()==Sensor.TYPE_MAGNETIC_FIELD) m = event.values[0];
 
         myTextView.setText("Accelerometor x: "+ax+" y: "+ay+" z: "+az+" Magnetometer: "+m);
-        av.update(ax,ay);
+        mView.update(ax,ay);
 
     }
 

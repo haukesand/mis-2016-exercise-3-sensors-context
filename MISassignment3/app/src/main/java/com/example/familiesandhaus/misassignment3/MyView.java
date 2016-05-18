@@ -17,6 +17,7 @@ public class MyView extends View {
     float speedX;
     float speedY;
     float radius = 10;
+    float oldPosX;
     float posX = radius;
     float posY = radius;
     long lastUpdateTime = 0;
@@ -32,8 +33,10 @@ public class MyView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawPath(drawPath, drawPaint);
+        //canvas.drawPath(drawPath, drawPaint);
         canvas.drawCircle(posX, posY, radius, drawPaint);
+        canvas.drawLine(getHeight()/2+posX,0.0f,getHeight()/2+posX,getHeight(), drawPaint);
+        canvas.drawLine(0,getHeight()/2+posY,getWidth(),getHeight()+posY,drawPaint);
     }
 
 
@@ -42,6 +45,8 @@ public class MyView extends View {
         drawPaint = new Paint();
         drawPaint.setColor(Color.BLACK);
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
+       oldPosX = posX;
+
         posX = getWidth() /2;
         posY = getHeight() /2;
     }
@@ -79,6 +84,11 @@ public class MyView extends View {
             posY = getHeight() - radius;
             speedY = 0;
         }
+
+
+
+
+
         this.invalidate();
     }
 
