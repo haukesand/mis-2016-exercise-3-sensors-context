@@ -15,13 +15,16 @@ public class MyView extends View {
 
     private Paint PaintX;
     private Paint PaintY;
+    private Paint PaintZ;
     private Bitmap canvasBitmap;
     float speedX;
     float speedY;
+    float speedZ;
     float radius = 10;
     float oldPosX, oldPosY;
     float posX = radius;
     float posY = radius;
+    float posZ = radius;
     long lastUpdateTime = 0;
     final float METER_TO_PIXEL = 50.0f;
     RelativeLayout rl;
@@ -46,7 +49,8 @@ public class MyView extends View {
         canvas.drawLine(centerX, centerY, posX, centerY, PaintX);
         //y-axis
         canvas.drawLine(centerX, centerY, centerX, posY, PaintY);
-        
+        //z-axis
+        canvas.drawLine(centerX, centerY, posX, posZ, PaintZ);
     }
 
 
@@ -56,6 +60,8 @@ public class MyView extends View {
         PaintX.setColor(Color.RED);
         PaintY = new Paint();
         PaintY.setColor(Color.GREEN);
+        PaintZ = new Paint();
+        PaintZ.setColor(Color.YELLOW);
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
         oldPosX = posX;
         oldPosY = posY;
@@ -64,7 +70,7 @@ public class MyView extends View {
         posY = getHeight() /2;
     }
 
-    public void update(float gravityX, float gravityY) {
+    public void update(float gravityX, float gravityY, float gravityZ) {
 
         if(lastUpdateTime == 0) {
             lastUpdateTime = System.currentTimeMillis();
@@ -76,9 +82,11 @@ public class MyView extends View {
 
         speedX -=((gravityX * ellapse)/1000.0f) * METER_TO_PIXEL;
         speedY +=((gravityY * ellapse)/1000.0f) * METER_TO_PIXEL;
+        speedZ +=((gravityY * ellapse)/1000.0f) * METER_TO_PIXEL;
 
         posX += ((speedX * ellapse) / 1000.0f);
         posY += ((speedY * ellapse) / 1000.0f);
+        posZ += ((speedZ * ellapse) / 1000.0f);
 
         /*Checks screen limits*/
         if (posX < radius) {

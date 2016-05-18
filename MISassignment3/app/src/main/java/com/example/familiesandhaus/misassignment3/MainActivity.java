@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getType()==Sensor.TYPE_MAGNETIC_FIELD) m = event.values[0];
 
         myTextView.setText("Accelerometor x: "+ax+" y: "+ay+" z: "+az+" Magnetometer: "+m);
-        mView.update(ax,ay);
+        mView.update(ax,ay, az);
 
     }
 
