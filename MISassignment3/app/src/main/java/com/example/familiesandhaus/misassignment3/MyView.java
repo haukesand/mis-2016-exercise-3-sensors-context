@@ -7,21 +7,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 public class MyView extends View {
 
-    private Path drawPath;
-    private Paint drawPaint;
+    private Paint PaintX;
+    private Paint PaintY;
     private Bitmap canvasBitmap;
     float speedX;
     float speedY;
     float radius = 10;
-    float oldPosX;
+    float oldPosX, oldPosY;
     float posX = radius;
     float posY = radius;
     long lastUpdateTime = 0;
     final float METER_TO_PIXEL = 50.0f;
+    RelativeLayout rl;
 
 
     public MyView(Context context, AttributeSet attrs) {
@@ -33,19 +36,29 @@ public class MyView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //canvas.drawPath(drawPath, drawPaint);
-        canvas.drawCircle(posX, posY, radius, drawPaint);
-        canvas.drawLine(getHeight()/2+posX,0.0f,getHeight()/2+posX,getHeight(), drawPaint);
-        canvas.drawLine(0,getHeight()/2+posY,getWidth(),getHeight()+posY,drawPaint);
+
+        //DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+
+        float centerX = this.getResources().getDisplayMetrics().widthPixels /2;
+        float centerY = this.getResources().getDisplayMetrics().heightPixels /2;
+
+        //x-axis
+        canvas.drawLine(centerX, centerY, posX, centerY, PaintX);
+        //y-axis
+        canvas.drawLine(centerX, centerY, centerX, posY, PaintY);
+        
     }
 
 
     private void setupDraw() {
 
-        drawPaint = new Paint();
-        drawPaint.setColor(Color.BLACK);
+        PaintX = new Paint();
+        PaintX.setColor(Color.RED);
+        PaintY = new Paint();
+        PaintY.setColor(Color.GREEN);
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
-       oldPosX = posX;
+        oldPosX = posX;
+        oldPosY = posY;
 
         posX = getWidth() /2;
         posY = getHeight() /2;
