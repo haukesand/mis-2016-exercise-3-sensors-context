@@ -15,7 +15,10 @@ public class MyView extends View {
 
     private Paint PaintX;
     private Paint PaintY;
+<<<<<<< HEAD
     private Paint PaintZ;
+=======
+>>>>>>> a7f88fd5aece1ddf1cf2c577707cf4784e60db62
     private Bitmap canvasBitmap;
     float speedX;
     float speedY;
@@ -49,8 +52,12 @@ public class MyView extends View {
         canvas.drawLine(centerX, centerY, posX, centerY, PaintX);
         //y-axis
         canvas.drawLine(centerX, centerY, centerX, posY, PaintY);
+<<<<<<< HEAD
         //z-axis
         canvas.drawLine(centerX, centerY, posX, posZ, PaintZ);
+=======
+        
+>>>>>>> a7f88fd5aece1ddf1cf2c577707cf4784e60db62
     }
 
 
@@ -60,8 +67,11 @@ public class MyView extends View {
         PaintX.setColor(Color.RED);
         PaintY = new Paint();
         PaintY.setColor(Color.GREEN);
+<<<<<<< HEAD
         PaintZ = new Paint();
         PaintZ.setColor(Color.YELLOW);
+=======
+>>>>>>> a7f88fd5aece1ddf1cf2c577707cf4784e60db62
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
         oldPosX = posX;
         oldPosY = posY;
