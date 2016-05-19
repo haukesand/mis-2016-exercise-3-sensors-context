@@ -28,9 +28,12 @@ public class FFTView extends View {
     private int windowWidth = 1024;
     public int arrayLCounter = 0;
     private int xTextPos, yTextPos;
+    public static String Context = "resting";
+    public static boolean contextUpdate = false;
     double sum, lastSum = 0;
     Paint paint;
     FFT fftObject ;
+    MainActivity mA;
     //NotificationCompat.Builder mBuilder;
 
 
@@ -62,10 +65,32 @@ public class FFTView extends View {
             sum = 0;
             //refreshing view
             invalidate();
+
+            Context = checkContext(lastSum);
+            contextUpdate = true;
         }
 
       }
 
+
+public String checkContext(double FFTsum){
+    String currContext = null;
+    //From the FFT Accelerometer data only it is already possible to distinguish different activity context
+    //we chose to use the whole sum of of all axes as this eliminates the influence of the devices orientation
+    //Further the FFTsum for walking with a combination of fast position change (GPS) is driving in car/train on
+    //non bumpy roads. a distinction between driving the bus and running can only be made with clever use of accelerometer data
+    //that checks for regular sinusoidal leg movements. These context are for resting devices without hand interaction
+    //it could be additionally checked if no touch events are happening and whether the screen is turned off
+
+    if (FFTsum < 4) currContext = "resting";
+    else if (FFTsum < 45) currContext = "walking";
+    else if (FFTsum < 130) currContext = "running";
+    else if (FFTsum > 131)currContext = "shaking";
+    return currContext;
+}
+public String returnContext(){
+    return Context;
+}
 
 public void changeWindow (int wWidth){
 

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private AttributeSet aSet;
     private MyView mView;
     private int progressB;
+    private int counter = 0;
     private FFTView fftv;
     private SeekBar yourSeekBar , windowSeekBar;
     NotificationCompat.Builder mBuilder;
@@ -117,7 +118,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mNManager.notify(1,mBuilder.build());
     }
 
+    public void updateContext(String currContext){
+        mNManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        mBuilder.setContentText(currContext);
+        mNManager.notify(1,mBuilder.build());
+    }
 
 
     protected void onResume() {
@@ -148,6 +154,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double  speedT = magnitude - 9.8f;
 
         fftv.fill(speedT);
+        counter+=1;
+        if (counter == 1024){
+            updateContext(fftv.returnContext());
+            counter =0;
+        }
 
     }
 
