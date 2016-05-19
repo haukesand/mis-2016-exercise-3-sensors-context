@@ -85,6 +85,13 @@ public class MyView extends View {
         PaintST = new Paint();
         PaintST.setColor(Color.LTGRAY);
 
+        PaintX.setStrokeWidth(3.0f);
+        PaintY.setStrokeWidth(3.0f);
+
+
+
+
+
         canvasBitmap = Bitmap.createBitmap(640, 1200, Bitmap.Config.ARGB_8888);
         oldPosX = posX;
         oldPosY = posY;
