@@ -143,10 +143,6 @@ public class MyView extends View {
             speedY = 0;
         }
 
-
-
-
-
         this.invalidate();
     }
 

@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private AttributeSet aSet;
     private MyView mView;
     private int progressB;
-
-    private SeekBar yourSeekBar;
+    private FFTView fftv;
+    private SeekBar yourSeekBar , windowSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Intent intent= new Intent(MainActivity.this,MyView.class);
         // startActivity(Intent);
         mView = (MyView) findViewById(R.id.view);
+        fftv = (FFTView) findViewById(R.id.view2);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         aSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -68,7 +69,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                                    }
                                                }
         );
+
+        windowSeekBar = (SeekBar) findViewById(R.id.seekBar2);
+
+        windowSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            private int windowWidth;
+                                                   @Override
+                                                   public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                                                       windowWidth = i;
+                                                       //set textView's text
+                                                   }
+
+                                                   @Override
+                                                   public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                                   }
+
+                                                   @Override
+                                                   public void onStopTrackingTouch(SeekBar seekBar) {
+                                                       fftv.changeWindow(windowWidth);
+                                                   }
+                                               }
+        );
     }
+
+
+
 
     protected void onResume() {
         super.onResume();
@@ -93,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         myTextView.setText("Accelerometer x: " + (short) ax + " y: " + (short) ay + " z: " + (short) az + " Magnetometer x: " + (short) mx + " y: " + (short) my + " z: " + (short) mz);
         mView.update(ax, ay, az);
+
+        double magnitude = Math.sqrt(ax*ax+ay*ay+az*az);
+        double  speedT = magnitude - 9.8f;
+
+        fftv.fill(speedT);
 
     }
 
