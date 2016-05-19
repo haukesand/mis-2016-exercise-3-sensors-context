@@ -31,6 +31,7 @@ public class FFTView extends View {
     double sum, lastSum = 0;
     Paint paint;
     FFT fftObject ;
+    //NotificationCompat.Builder mBuilder;
 
 
 
@@ -51,6 +52,7 @@ public class FFTView extends View {
             for (int i = 0; i < windowWidth; i++){
             fftArray[i] = Math.sqrt(newxBuffer[i]*newxBuffer[i]+newyBuffer[i]*newyBuffer[i]);
             sum += fftArray[i];
+
             }
             lastSum = sum/windowWidth;
            //resetting working variables
@@ -64,14 +66,7 @@ public class FFTView extends View {
 
       }
 
-    public void newRecognizedContext (char myMessage){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
 
-    }
 public void changeWindow (int wWidth){
 
     windowWidth = (int)Math.pow(2,wWidth);

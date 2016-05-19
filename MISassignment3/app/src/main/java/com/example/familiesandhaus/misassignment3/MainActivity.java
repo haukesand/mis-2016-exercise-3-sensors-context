@@ -1,5 +1,6 @@
 package com.example.familiesandhaus.misassignment3;
 
+import android.app.NotificationManager;
 import android.content.Context;
 
 import android.content.Intent;
@@ -7,8 +8,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.SeekBar;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private int progressB;
     private FFTView fftv;
     private SeekBar yourSeekBar , windowSeekBar;
+    NotificationCompat.Builder mBuilder;
+    NotificationManager mNManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         // Intent intent= new Intent(MainActivity.this,MyView.class);
         // startActivity(Intent);
+
         mView = (MyView) findViewById(R.id.view);
         fftv = (FFTView) findViewById(R.id.view2);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -91,6 +97,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                                    }
                                                }
         );
+
+        mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setContentTitle("Recognizing Activity")
+                        .setOngoing(true)
+                        .setContentText("Please wait");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int color = 0x008000;
+            mBuilder.setColor(color);
+            mBuilder.setSmallIcon(R.drawable.icon);
+
+        } else {
+            mBuilder.setSmallIcon(R.drawable.icon);
+        }
+
+        mNManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNManager.notify(1,mBuilder.build());
     }
 
 
